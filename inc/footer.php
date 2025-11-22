@@ -71,6 +71,16 @@
         }
     }
 
+    function bookRoom(room_id) {
+    <?php 
+    if(isset($_SESSION['login']) && $_SESSION['login'] == true) {
+        echo "window.location.href = 'room_details.php?id=' + room_id;";
+    } else {
+        echo "alert('error', 'Эхлээд нэвтэрнэ үү!'); let loginModal = new bootstrap.Modal(document.getElementById('loginModal')); loginModal.show();";
+    }
+    ?>
+}
+
     // Register form
     let register_form = document.getElementById('register-form');
 

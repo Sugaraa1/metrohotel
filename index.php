@@ -34,11 +34,9 @@
         <div class="swiper swiper-container">
             <div class="swiper-wrapper">
                 <?php
-                // database → carousel хүснэгтэд хадгалсан зургуудыг бүхэлд нь татаж байна.
                 $res = selectAll('carousel');
                 while($row = mysqli_fetch_assoc($res))
                     {
-                        // CAROUSEL_IMG_PATH – тогтмол замаас зургийг харуулна.
                         $path = CAROUSEL_IMG_PATH;
                         echo <<<data
                         <div class="swiper-slide">
@@ -51,52 +49,63 @@
         </div>
     </div>
 
-    <!-- CHECK AVAILABLE FORMB -->
+    <!-- CHECK AVAILABLE FORM -->
 
     <div class="container availability-form">
         <div class="row">
             <div class="col-lg-12 bg-white shadow p-4 rounded">
                 <h5 class="mb-4">Check Booking Available</h5>
-                <form>
+                <form id="search_form">
                     <div class="row align-items-end">
                         <div class="col-lg-3 mb-3">
                             <label class="form-label" style="font-weight: 500;">Check-in</label>
-                            <input type="date" class="form-control shadow-none">
+                            <input type="date" name="check_in" class="form-control shadow-none" required>
                         </div>
-                        <div class="col-lg-3 mb-3"">
+                        <div class="col-lg-3 mb-3">
                             <label class="form-label" style="font-weight: 500;">Check-out</label>
-                            <input type="date" class="form-control shadow-none">
+                            <input type="date" name="check_out" class="form-control shadow-none" required>
                         </div>
-                            <div class="col-lg-3 mb-3"">
-                                <label class="form-label" style="font-weight: 500;">Adult</label>
-                                <select class="form-select shadow-none">
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-2 mb-3"">
-                                <label class="form-label" style="font-weight: 500;">Children</label>
-                                <select class="form-select shadow-none">
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-1 mb-lg-3 mt-2">
-                                <button type="submit" class="btn text-white shadow-none custom-bg">Submit</button>
-                            </div>
+                        <div class="col-lg-2 mb-3">
+                            <label class="form-label" style="font-weight: 500;">Adult</label>
+                            <select name="adults" class="form-select shadow-none">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 mb-3">
+                            <label class="form-label" style="font-weight: 500;">Children</label>
+                            <select name="children" class="form-select shadow-none">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 mb-lg-3 mt-2">
+                            <button type="submit" class="btn text-white shadow-none custom-bg w-100">Search</button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>   
     </div>
 
+    <!-- Search Results -->
+    <div id="search_results" class="container mt-4" style="display: none;">
+        <h4 class="mb-4">Хайлтын үр дүн</h4>
+        <div class="row" id="search_results_content">
+        </div>
+    </div>
+
     <!-- Our Rooms -->
 
     <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR ROOMS</h2>
 
-    <div class="container">
+    <div class="container" id="default_rooms">
         <div class="row">
 
          <?php 
@@ -104,8 +113,6 @@
 
                 while($room_data = mysqli_fetch_assoc($room_res))
                 {
-                    //get features of room
-
                     $fea_q = mysqli_query($con,"SELECT f.name FROM `features` f 
                         INNER JOIN `room_features` rfea 
                         ON f.id = rfea.features_id 
@@ -118,8 +125,6 @@
                             </span>";
                     }
 
-                    //get facilities of room
-
                     $fac_q = mysqli_query($con,"SELECT f.name FROM `facilities` f 
                         INNER JOIN `room_facilities` rfac ON f.id = rfac.facilities_id 
                         WHERE rfac.room_id = '$room_data[id]'");
@@ -129,10 +134,7 @@
                         $facilities_data .="<span class='badge rounded-pill bg-light text-dark text-wrap me-1 mb-1'>
                                 $fac_row[name]
                             </span>";
-
                     }
-
-                    //get thumbnail of image
 
                     $room_thumb = ROOMS_IMG_PATH."thumbnail.jpg";
                     $thumb_q = mysqli_query($con,"SELECT * FROM `room_image` 
@@ -145,7 +147,6 @@
                     $room_thumb = ROOMS_IMG_PATH.$thumb_res['image'];
                 }
 
-                //print room card
                 echo <<<data
                 <div class="col-lg-4 col-md-6 my-3">
                 <div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
@@ -180,7 +181,7 @@
                             </span>
                         </div>
                         <div class="d-flex justify-content-evenly mb-2">
-                            <a href="#" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
+                            <a href="#" onclick="bookRoom($room_data[id])" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
                             <a href="room_details.php?id=$room_data[id]" class="btn btn-sm  btn-outline-dark shadow-none">More details</a>
                         </div>                      
                     </div>
@@ -415,7 +416,145 @@
         },
       }
     });
-  </script>
+
+    // Book room function
+    function bookRoom(room_id) {
+        <?php 
+        if(isset($_SESSION['login']) && $_SESSION['login'] == true) {
+            echo "window.location.href = 'room_details.php?id=' + room_id;";
+        } else {
+            echo "alert('error', 'Эхлээд нэвтэрнэ үү!'); let loginModal = new bootstrap.Modal(document.getElementById('loginModal')); loginModal.show();";
+        }
+        ?>
+    }
+
+    // Set min date to today
+    let today = new Date().toISOString().split('T')[0];
+    document.querySelector('input[name="check_in"]').setAttribute('min', today);
+    document.querySelector('input[name="check_out"]').setAttribute('min', today);
+
+    // Update check-out min date when check-in changes
+    document.querySelector('input[name="check_in"]').addEventListener('change', function() {
+        let checkIn = new Date(this.value);
+        checkIn.setDate(checkIn.getDate() + 1);
+        let minCheckOut = checkIn.toISOString().split('T')[0];
+        document.querySelector('input[name="check_out"]').setAttribute('min', minCheckOut);
+    });
+
+    // Search form submit
+    let search_form = document.getElementById('search_form');
+    search_form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        searchRooms();
+    });
+
+    function searchRooms() {
+        let formData = new FormData(search_form);
+        formData.append('search_rooms', '');
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "ajax/search_rooms.php", true);
+
+        xhr.onload = function() {
+            let response = JSON.parse(this.responseText);
+            
+            if(response.status == 'success') {
+                displaySearchResults(response.rooms);
+                document.getElementById('search_results').style.display = 'block';
+                document.getElementById('default_rooms').style.display = 'none';
+                
+                // Scroll to results
+                document.getElementById('search_results').scrollIntoView({behavior: 'smooth'});
+                
+                alert('success', response.message);
+            } else if(response.status == 'not_found') {
+                document.getElementById('search_results').style.display = 'block';
+                document.getElementById('search_results_content').innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-exclamation-circle" style="font-size: 4rem; color: #6c757d;"></i>
+                        <h4 class="mt-3">${response.message}</h4>
+                        <button class="btn btn-primary mt-3" onclick="resetSearch()">View All Rooms</button>
+                    </div>
+                `;
+                document.getElementById('default_rooms').style.display = 'none';
+                alert('error', response.message);
+            } else {
+                alert('error', response.message);
+            }
+        }
+
+        xhr.send(formData);
+    }
+
+    function displaySearchResults(rooms) {
+        let html = '';
+        
+        rooms.forEach(function(room) {
+            let features = '';
+            room.features.forEach(function(feature) {
+                features += `<span class="badge rounded-pill bg-light text-dark text-wrap me-1 mb-1">${feature}</span>`;
+            });
+            
+            let facilities = '';
+            room.facilities.forEach(function(facility) {
+                facilities += `<span class="badge rounded-pill bg-light text-dark text-wrap me-1 mb-1">${facility}</span>`;
+            });
+            
+            html += `
+                <div class="col-lg-4 col-md-6 my-3">
+                    <div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
+                        <img src="${room.thumbnail}" class="card-img-top">
+                        <div class="card-body">
+                            <h5>${room.name}</h5>
+                            <h6 class="mb-2 text-success">₮${room.total_price} for ${room.nights} night(s)</h6>
+                            <p class="mb-4 text-muted small">₮${room.price} per night</p>
+                            <div class="features mb-4">
+                                <h6 class="mb-1">Features</h6>
+                                ${features}
+                            </div>
+                            <div class="facilities mb-4">
+                                <h6 class="mb-1">Facilities</h6>
+                                ${facilities}
+                            </div>
+                            <div class="guests mb-4">
+                                <h6 class="mb-1">Guests</h6>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    ${room.adult} Adults
+                                </span>
+                                <span class="badge rounded-pill bg-light text-dark text-wrap">
+                                    ${room.children} Children
+                                </span>
+                            </div>
+                            <div class="d-flex justify-content-evenly mb-2">
+                                <a href="#" onclick="bookRoom(${room.id})" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
+                                <a href="room_details.php?id=${room.id}" class="btn btn-sm btn-outline-dark shadow-none">More details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += `
+            <div class="col-12 text-center mt-4">
+                <button class="btn btn-outline-dark" onclick="resetSearch()">Clear Search</button>
+            </div>
+        `;
+        
+        document.getElementById('search_results_content').innerHTML = html;
+    }
+
+    function resetSearch() {
+        document.getElementById('search_results').style.display = 'none';
+        document.getElementById('default_rooms').style.display = 'block';
+        search_form.reset();
+        
+        // Reset min dates
+        let today = new Date().toISOString().split('T')[0];
+        document.querySelector('input[name="check_in"]').setAttribute('min', today);
+        document.querySelector('input[name="check_out"]').setAttribute('min', today);
+    }
+</script>
 
 </body>
 </html>

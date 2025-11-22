@@ -156,7 +156,7 @@
                         area;
 
                         echo<<<book
-                        <a href="#" class="btn w-100 text-white custom-bg shadow-none mb-1">Book Now</a>
+                        <button class="btn w-100 text-white custom-bg shadow-none mb-1" onclick="checkLogin($room_data[id])">Book Now</button>
                         book;
 
                     ?>
@@ -164,7 +164,7 @@
                 </div>                   
             </div>
 
-            <div class="col-12  mt-4 px-4">
+            <div class="col-12 mt-4 px-4">
                 <div class="mb-5">
                     <h5>Description</h5>
                     <p>
@@ -195,7 +195,169 @@
         </div>
     </div>
 
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Book Room - <?php echo $room_data['name'] ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="booking_form">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Check-in</label>
+                                <input type="date" name="check_in" class="form-control shadow-none" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Check-out</label>
+                                <input type="date" name="check_out" class="form-control shadow-none" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Adults</label>
+                                <select name="adults" class="form-select shadow-none" required>
+                                    <?php 
+                                        for($i=1; $i<=$room_data['adult']; $i++) {
+                                            echo "<option value='$i'>$i</option>";
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Children</label>
+                                <select name="children" class="form-select shadow-none" required>
+                                    <?php 
+                                        for($i=0; $i<=$room_data['children']; $i++) {
+                                            echo "<option value='$i'>$i</option>";
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Arrival Time (optional)</label>
+                                <input type="time" name="arrival_time" class="form-control shadow-none">
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Special Requests (optional)</label>
+                                <textarea name="special_requests" class="form-control shadow-none" rows="3"></textarea>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="availability_result" class="alert" style="display:none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="checkAvailability()">Check Availability</button>
+                        <button type="submit" id="confirm_booking_btn" class="btn btn-success" style="display:none;">Confirm Booking</button>
+                    </div>
+                    <input type="hidden" name="room_id" value="<?php echo $room_data['id'] ?>">
+                </form>
+            </div>
+        </div>
+    </div>
+
     <?php require('inc/footer.php'); ?>
 
+    <script>
+        // Login шалгах
+        function checkLogin(room_id) {
+            <?php 
+            if(isset($_SESSION['login']) && $_SESSION['login'] == true) {
+                echo "openBookingModal();";
+            } else {
+                echo "alert('error', 'Эхлээд нэвтэрнэ үү!');";
+            }
+            ?>
+        }
+
+        function openBookingModal() {
+            let bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+            bookingModal.show();
+            
+            // Set min date to today
+            let today = new Date().toISOString().split('T')[0];
+            document.querySelector('input[name="check_in"]').setAttribute('min', today);
+            document.querySelector('input[name="check_out"]').setAttribute('min', today);
+        }
+
+        // Check availability
+        function checkAvailability() {
+            let form = document.getElementById('booking_form');
+            let formData = new FormData(form);
+            formData.append('check_availability', '');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/booking_crud.php", true);
+
+            xhr.onload = function() {
+                let response = JSON.parse(this.responseText);
+                let resultDiv = document.getElementById('availability_result');
+                
+                resultDiv.style.display = 'block';
+                
+                if(response.status == 'available') {
+                    resultDiv.className = 'alert alert-success';
+                    resultDiv.innerHTML = response.message + '<br><strong>Total Price: ₮' + response.total_price + ' (' + response.days + ' nights)</strong>';
+                    document.getElementById('confirm_booking_btn').style.display = 'inline-block';
+                } else if(response.status == 'unavailable') {
+                    resultDiv.className = 'alert alert-warning';
+                    resultDiv.innerHTML = response.message;
+                    document.getElementById('confirm_booking_btn').style.display = 'none';
+                } else {
+                    resultDiv.className = 'alert alert-danger';
+                    resultDiv.innerHTML = response.message;
+                    document.getElementById('confirm_booking_btn').style.display = 'none';
+                }
+            }
+
+            xhr.send(formData);
+        }
+
+        // Book room
+        let booking_form = document.getElementById('booking_form');
+        booking_form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let formData = new FormData(this);
+            formData.append('book_room', '');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/booking_crud.php", true);
+
+            xhr.onload = function() {
+                let response = JSON.parse(this.responseText);
+                
+                if(response.status == 'success') {
+                    alert('success', response.message);
+                    
+                    let modal = bootstrap.Modal.getInstance(document.getElementById('bookingModal'));
+                    modal.hide();
+                    
+                    booking_form.reset();
+                    document.getElementById('availability_result').style.display = 'none';
+                    document.getElementById('confirm_booking_btn').style.display = 'none';
+                    
+                    // Redirect to bookings page
+                    setTimeout(function() {
+                        window.location.href = 'bookings.php';
+                    }, 1500);
+                } else {
+                    alert('error', response.message);
+                }
+            }
+
+            xhr.send(formData);
+        });
+
+        // Update check-out min date when check-in changes
+        document.querySelector('input[name="check_in"]').addEventListener('change', function() {
+            let checkIn = new Date(this.value);
+            checkIn.setDate(checkIn.getDate() + 1);
+            let minCheckOut = checkIn.toISOString().split('T')[0];
+            document.querySelector('input[name="check_out"]').setAttribute('min', minCheckOut);
+        });
+    </script>
 </body>
 </html>
