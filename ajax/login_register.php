@@ -14,9 +14,9 @@
 
         // Хэрэглэгч өмнө нь бүртгэлтэй эсэхийг шалгах
         $u_exist = select("SELECT * FROM `user_cred` WHERE `email` = ? OR `phonenum` = ? LIMIT 1", 
-                         [$data['email'],$data['phonenum']], "ss");
+                         [$data['email'], $data['phonenum']], "ss");
 
-        if(mysqli_num_rows($u_exist)!=0){
+        if(mysqli_num_rows($u_exist) != 0){
             $u_exist_fetch = mysqli_fetch_assoc($u_exist);
             echo ($u_exist_fetch['email'] == $data['email']) ? 'email_already' : 'phone_already';
             exit;
@@ -37,14 +37,27 @@
         // Нууц үгийг hash хийх
         $enc_pass = password_hash($data['pass'], PASSWORD_BCRYPT);
 
-        // is_verified = 1 болгож, token = NULL болгож өгч байна (email баталгаажуулалт хэрэггүй)
-        $query = "INSERT INTO `user_cred`(`name`, `email`, `address`, `phonenum`, `pincode`, `dob`, `profile`, `password`, `is_verified`) 
-                  VALUES (?,?,?,?,?,?,?,?,?)";
+        // Database руу өгөгдөл оруулах (is_verified = 1, token = NULL)
+        $query = "INSERT INTO `user_cred`(`name`, `email`, `address`, `phonenum`, `pincode`, `dob`, `profile`, `password`, `is_verified`, `token`) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $values = [$data['name'], $data['email'], $data['address'], $data['phonenum'], 
-                   $data['pincode'], $data['dob'], $img, $enc_pass, 1]; // is_verified = 1
+        $values = [
+            $data['name'], 
+            $data['email'], 
+            $data['address'], 
+            $data['phonenum'], 
+            $data['pincode'], 
+            $data['dob'], 
+            $img, 
+            $enc_pass, 
+            1,  // is_verified
+            NULL  // token
+        ];
 
-        if(insert($query, $values, 'ssssssssi'))
+        // Insert хийх
+        $result = insert($query, $values, 'ssssssssii');
+        
+        if($result)
         {
             echo 1; // Амжилттай бүртгэгдлээ
         }
@@ -58,8 +71,8 @@
         $data = filteration($_POST);
 
         // Email эсвэл утасны дугаар болон нууц үгээр нэвтрэх
-        $u_exist = select("SELECT * FROM `user_cred` WHERE `email`=? OR `phonenum`=? LIMIT 1",
-                         [$data['email_or_phone'], $data['email_or_phone']], "ss");
+        $u_exist = select("SELECT * FROM `user_cred` WHERE (`email`=? OR `phonenum`=?) AND `status`=? LIMIT 1",
+                         [$data['email_or_phone'], $data['email_or_phone'], 1], "ssi");
 
         if(mysqli_num_rows($u_exist) == 0){
             echo 'inv_email_mob'; // Хэрэглэгч олдсонгүй
@@ -81,6 +94,7 @@
         $_SESSION['uName'] = $u_fetch['name'];
         $_SESSION['uPic'] = $u_fetch['profile'];
         $_SESSION['uPhone'] = $u_fetch['phonenum'];
+        $_SESSION['uEmail'] = $u_fetch['email'];
 
         echo 1; // Амжилттай нэвтэрлээ
     }

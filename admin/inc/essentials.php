@@ -7,6 +7,7 @@
     define('CAROUSEL_IMG_PATH',SITE_URL.'images/carousel/');
     define('FACILITIES_IMG_PATH',SITE_URL.'images/facilities/');
     define('ROOMS_IMG_PATH',SITE_URL.'images/rooms/');
+    define('USERS_IMG_PATH',SITE_URL.'images/users/');
     
 
     //backend upload process needs this data
@@ -19,7 +20,7 @@
     define('USERS_FOLDER','users/');
 
     //sendgrid
-    define('SENDGRID_API_KEY', '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');
+    // define('SENDGRID_API_KEY', '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');
 
 
 
@@ -120,32 +121,57 @@ function alert($type, $msg){
         if(!in_array($img_mime,$valid_mime)){
             return 'inv_img'; //invalid image mime or format
         }
+        else if(($image['size']/(1024*1024))>2){
+            return 'inv_size'; // invalid size greater than 2mb
+        }
         else{
             $ext = pathinfo($image['name'],PATHINFO_EXTENSION);
             $rname = 'IMG_'.random_int(11111,99999).".jpeg";
 
             $img_path = UPLOAD_IMAGE_PATH.USERS_FOLDER.$rname;
 
-            if($ext == 'png' || $ext == 'PNG'){
-                $img = imagecreatefrompng($image['tmp_name']);
-            }
-            else if($ext == 'webp' || $ext == 'WEBP') {
-                $img = imagecreatefromwebp($image['tmp_name']);
-            }
-            else{
-                $img = imagecreatefromjpeg($image['tmp_name']);
+            // GD extension шалгах
+            if(!extension_loaded('gd')) {
+                // GD байхгүй бол зүгээр л зургийг хуулна
+                if(move_uploaded_file($image['tmp_name'], $img_path)){
+                    return $rname;
+                }
+                else{
+                    return 'upd_failed';
+                }
             }
 
-            if(imagejpeg($img, $img_path,75)){
-                return $rname;
-            }
-            else{
+            // GD байвал convert хийнэ
+            try {
+                if($ext == 'png' || $ext == 'PNG'){
+                    $img = imagecreatefrompng($image['tmp_name']);
+                }
+                else if($ext == 'webp' || $ext == 'WEBP') {
+                    $img = imagecreatefromwebp($image['tmp_name']);
+                }
+                else{
+                    $img = imagecreatefromjpeg($image['tmp_name']);
+                }
+
+                if($img && imagejpeg($img, $img_path, 75)){
+                    imagedestroy($img);
+                    return $rname;
+                }
+                else{
+                    // Convert амжилтгүй бол зүгээр файл хуулна
+                    if(move_uploaded_file($image['tmp_name'], $img_path)){
+                        return $rname;
+                    }
+                    return 'upd_failed';
+                }
+            } catch (Exception $e) {
+                // Алдаа гарвал зүгээр файл хуулна
+                if(move_uploaded_file($image['tmp_name'], $img_path)){
+                    return $rname;
+                }
                 return 'upd_failed';
             }
         }
     }
-
-    
-
 
 ?>

@@ -98,6 +98,8 @@
         xhr.open("POST", "ajax/login_register.php", true);
 
         xhr.onload = function(){
+            console.log("Response:", this.responseText); // Debug хийх
+            
             if(this.responseText == 'pass_mismatch'){
                 alert('error', "Нууц үг таарахгүй байна!");
             }
@@ -116,10 +118,17 @@
             else if(this.responseText == 'ins_failed'){
                 alert('error', "Бүртгэл амжилтгүй боллоо!");
             }
-            else {
+            else if(this.responseText == '1'){
                 alert('success', "Амжилттай бүртгэгдлээ! Та нэвтэрч орно уу.");
                 register_form.reset();
+            }
+            else {
+                alert('error', "Алдаа: " + this.responseText);
             }             
+        }
+
+        xhr.onerror = function(){
+            alert('error', "Сервертэй холбогдоход алдаа гарлаа!");
         }
 
         xhr.send(data);
