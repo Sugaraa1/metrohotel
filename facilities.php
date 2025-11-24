@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metro Hotel - fACILITIES</title>
+    <title>Метро Зочид Буудал - ҮЙЛЧИЛГЭЭ</title>
     <?php require('inc/links.php'); ?>
     <style>
         .pop:hover{
@@ -18,9 +18,9 @@
     <?php require('inc/header.php'); ?>
     
     <div class="my-5 px-4">
-        <h2 class="fw-bold h-font text-center">OUR FACILITIES</h2>
+        <h2 class="fw-bold h-font text-center">МАНАЙ ҮЙЛЧИЛГЭЭ</h2>
         <div class="h-line bg-dark"></div>
-        <p class="text-center mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum repellendus velit unde nihil labore <br> consectetur excepturi alias voluptatum veritatis hic.</p>
+        <p class="text-center mt-3">Бид танд хамгийн тохь тухтай орчин, өндөр чанарын үйлчилгээ үзүүлэхэд бэлэн байна.</p>
     </div>
 
     <div class="container">

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metro Hotel- ABOUT</title>
+    <title>Метро Зочид Буудал - БИДНИЙ ТУХАЙ</title>
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
     <?php require('inc/links.php'); ?>
     <style>
@@ -17,17 +17,17 @@
     <?php require('inc/header.php'); ?>
     
     <div class="my-5 px-4">
-        <h2 class="fw-bold h-font text-center">ABOUT US</h2>
+        <h2 class="fw-bold h-font text-center">БИДНИЙ ТУХАЙ</h2>
         <div class="h-line bg-dark"></div>
-        <p class="text-center mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum repellendus velit unde nihil labore <br> consectetur excepturi alias voluptatum veritatis hic.</p>
+        <p class="text-center mt-3">Метро Зочид Буудал нь таны амралтыг тав тухтай, үнэ цэнтэй болгох зорилготой, <br> өндөр чанарын үйлчилгээ үзүүлдэг буудал юм.</p>
     </div>
 
     <div class="container">
         <div class="row justify-content-between align-items-center">
             <div class="col-lg-6 col-md-5 mb-4 order-lg-1 order-md-1 order-2">
-                <h3 class="mb-3">Lorem ipsum dolor sit.</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus non alias commodi quasi optio modi architecto facere laboriosam fuga minima.
-                Doloribus non alias commodi quasi optio modiarchitecto facere laboriosam fuga minima.
+                <h3 class="mb-3">Бид танд хамгийн сайн үйлчилгээг үзүүлэхэд бэлэн</h3>
+                <p>Метро Зочид Буудал нь олон жилийн туршлагатай, мэргэжлийн багтай, зочдын сэтгэл ханамжийг эрхэмлэдэг буудал юм.
+                Бид танд орчин үеийн тав тухтай өрөө, чанартай үйлчилгээ үзүүлж, таны амралтыг дурсамжтай болгохыг эрмэлздэг.
                 </p>
             </div>
             <div class="col-lg-5 col-md-5 mb-4 order-lg-2 order-md-2 order-1">
@@ -41,31 +41,31 @@
             <div class="col-lg-3 col-md-6 mb-4 px-4">
                 <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
                     <img src="images/carousel/yhdfghf.jpg" width="70px">
-                    <h4 class="mt-3">100+ Rooms</h4>
+                    <h4 class="mt-3">100+ Өрөө</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 px-4">
                 <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
                     <img src="images/carousel/yhdfghf.jpg" width="70px">
-                    <h4 class="mt-3">200+ CUSTOMERS</h4>
+                    <h4 class="mt-3">200+ ЗОЧИН</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 px-4">
                 <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
                     <img src="images/carousel/yhdfghf.jpg" width="70px">
-                    <h4 class="mt-3">150+ REVIEWS</h4>
+                    <h4 class="mt-3">150+ ҮНЭЛГЭЭ</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 px-4">
                 <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
                     <img src="images/carousel/yhdfghf.jpg" width="70px">
-                    <h4 class="mt-3">100+ STAFFS</h4>
+                    <h4 class="mt-3">100+ АЖИЛТАН</h4>
                 </div>
             </div>
         </div>
     </div>
 
-    <h3 class="my-5 fw-bold h-font text-center">MANAGEMENT TEAM</h3>
+    <h3 class="my-5 fw-bold h-font text-center">МАНАЙ БАГ</h3>
         
     <div class="container px-4">
          <div class="swiper mySwiper">

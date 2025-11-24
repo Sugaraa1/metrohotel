@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metro Hotel - My Bookings</title>
+    <title>Метро Зочид Буудал - Миний Захиалгууд</title>
     <?php require('inc/links.php'); ?>
 </head>
 <body class="bg-light">
@@ -22,7 +22,7 @@
         <div class="row" id="bookings_data">
             <div class="col-12 text-center">
                 <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">Ачааллаж байна...</span>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
                         bookingsDiv.innerHTML = `
                             <div class="col-12 text-center">
                                 <p>Танд захиалга байхгүй байна.</p>
-                                <a href="rooms.php" class="btn btn-primary">Browse Rooms</a>
+                                <a href="rooms.php" class="btn btn-primary">Өрөө үзэх</a>
                             </div>
                         `;
                     } else {
@@ -53,23 +53,23 @@
                         response.bookings.forEach(function(booking) {
                             let statusBadge = '';
                             if(booking.booking_status == 'pending') {
-                                statusBadge = '<span class="badge bg-warning">Pending</span>';
+                                statusBadge = '<span class="badge bg-warning">Хүлээгдэж байна</span>';
                             } else if(booking.booking_status == 'confirmed') {
-                                statusBadge = '<span class="badge bg-success">Confirmed</span>';
+                                statusBadge = '<span class="badge bg-success">Баталгаажсан</span>';
                             } else if(booking.booking_status == 'cancelled') {
-                                statusBadge = '<span class="badge bg-danger">Cancelled</span>';
+                                statusBadge = '<span class="badge bg-danger">Цуцлагдсан</span>';
                             }
                             
                             let paymentBadge = '';
                             if(booking.payment_status == 'paid') {
-                                paymentBadge = '<span class="badge bg-success">Paid</span>';
+                                paymentBadge = '<span class="badge bg-success">Төлсөн</span>';
                             } else {
-                                paymentBadge = '<span class="badge bg-warning">Unpaid</span>';
+                                paymentBadge = '<span class="badge bg-warning">Төлөөгүй</span>';
                             }
                             
                             let cancelBtn = '';
                             if(booking.booking_status != 'cancelled') {
-                                cancelBtn = `<button class="btn btn-sm btn-danger" onclick="cancelBooking(${booking.booking_id})">Cancel</button>`;
+                                cancelBtn = `<button class="btn btn-sm btn-danger" onclick="cancelBooking(${booking.booking_id})">Цуцлах</button>`;
                             }
                             
                             html += `
@@ -79,13 +79,13 @@
                                             <div class="row">
                                                 <div class="col-md-8">
                                                     <h5>${booking.room_name}</h5>
-                                                    <p class="mb-1"><strong>Order ID:</strong> ${booking.order_id}</p>
-                                                    <p class="mb-1"><strong>Check-in:</strong> ${booking.check_in}</p>
-                                                    <p class="mb-1"><strong>Check-out:</strong> ${booking.check_out}</p>
-                                                    <p class="mb-1"><strong>Guests:</strong> ${booking.adults} Adults, ${booking.children} Children</p>
-                                                    <p class="mb-1"><strong>Total Price:</strong> ₮${booking.total_price}</p>
-                                                    <p class="mb-1"><strong>Booking Date:</strong> ${booking.booking_date}</p>
-                                                    ${booking.special_requests ? '<p class="mb-1"><strong>Special Requests:</strong> ' + booking.special_requests + '</p>' : ''}
+                                                    <p class="mb-1"><strong>Захиалгын дугаар:</strong> ${booking.order_id}</p>
+                                                    <p class="mb-1"><strong>Ирэх огноо:</strong> ${booking.check_in}</p>
+                                                    <p class="mb-1"><strong>Явах огноо:</strong> ${booking.check_out}</p>
+                                                    <p class="mb-1"><strong>Зочид:</strong> ${booking.adults} Том хүн, ${booking.children} Хүүхэд</p>
+                                                    <p class="mb-1"><strong>Нийт үнэ:</strong> ₮${booking.total_price}</p>
+                                                    <p class="mb-1"><strong>Захиалсан огноо:</strong> ${booking.booking_date}</p>
+                                                    ${booking.special_requests ? '<p class="mb-1"><strong>Тусгай хүсэлт:</strong> ' + booking.special_requests + '</p>' : ''}
                                                 </div>
                                                 <div class="col-md-4 text-end">
                                                     <div class="mb-2">

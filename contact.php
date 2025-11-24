@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metro Hotel - CONTACT</title>
+    <title>Метро Зочид Буудал - ХОЛБОО БАРИХ</title>
     <?php require('inc/links.php'); ?>
     </head>
 <body class="bg-light">
@@ -11,9 +11,9 @@
     <?php require('inc/header.php'); ?>
     
     <div class="my-5 px-4">
-        <h2 class="fw-bold h-font text-center">CONTACT US</h2>
+        <h2 class="fw-bold h-font text-center">БИДЭНТЭЙ ХОЛБОГДОХ</h2>
         <div class="h-line bg-dark"></div>
-        <p class="text-center mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum repellendus velit unde nihil labore <br> consectetur excepturi alias voluptatum veritatis hic.</p>
+        <p class="text-center mt-3">Бидэнтэй холбогдох, асуулт тавих, санал хүсэлт илгээх боломжтой.</p>
     </div>
 
     <div class="container">
@@ -23,12 +23,12 @@
                 <div class="bg-white rounded shadow p-4">
                     <iframe class="w-100 rounded mb-4" height="320px" src="<?php echo $contact_r['iframe'] ?>"loading="lazy"></iframe>
 
-                        <h5>Address</h5>
+                        <h5>Хаяг</h5>
                         <a href="<?php echo $contact_r['gmap'] ?>" target="_blank" class="d-iniline-block text-decoration-none text-dark">
                             <i class="bi bi-geo-alt"></i>
                             <?php echo $contact_r['address'] ?>
                         </a>
-                        <h5 class="mt-4">Call us</h5>
+                        <h5 class="mt-4">Утас</h5>
                     <a href="tel: +<?php echo $contact_r['pn1'] ?>" class="d-inline-block mb-2 text-decoration-none text-dark">
                         <i class="bi bi-telephone-fill"></i>+<?php echo $contact_r['pn1'] ?>
                     </a>
@@ -41,11 +41,11 @@
                             data;
                         }
                     ?>
-                    <h5 class="mt-4">Email</h5>
+                    <h5 class="mt-4">И-мэйл</h5>
                     <a href="mailto: <?php echo $contact_r['email'] ?>" class="d-inline-block text-decoration-none text-dark"><i class="bi bi-envelope-fill"></i>
                     <?php echo $contact_r['email'] ?></a>
 
-                    <h5 class="mt-4">Follow us</h5>
+                    <h5 class="mt-4">Биднийг дагаарай</h5>
                     <?php
                         if($contact_r['tw']!=''){
                             echo<<<data
@@ -68,24 +68,24 @@
               <div class="col-lg-6 col-md-6 px-4">
                 <div class="bg-white rounded shadow p-4">
                     <form method="POST">
-                        <h5>Send a message</h5>
+                        <h5>Мессеж илгээх</h5>
                         <div class="mt-3">
-                                <label class="form-label" style="font-weight: 500;">Name</label>
+                                <label class="form-label" style="font-weight: 500;">Нэр</label>
                                 <input name="name" required type="text" class="form-control shadow-none">
                             </div>
                         <div class="mt-3">
-                                <label class="form-label" style="font-weight: 500;">Email</label>
+                                <label class="form-label" style="font-weight: 500;">И-мэйл</label>
                                 <input name="email" required type="email" class="form-control shadow-none">
                             </div>
                         <div class="mt-3">
-                                <label class="form-label" style="font-weight: 500;">Subject</label>
+                                <label class="form-label" style="font-weight: 500;">Гарчиг</label>
                                 <input name="subject" required type="text" class="form-control shadow-none">
                             </div>
                         <div class="mt-3">
-                                <label class="form-label" style="font-weight: 500;">Message</label>                               
+                                <label class="form-label" style="font-weight: 500;">Мессеж</label>                               
                                 <textarea name="message" required class="form-control shadow-none" rows="5" style="resize: none;"></textarea>
                             </div>
-                            <button type="submit" name="send" class="btn text-white custom-bg mt-3">SEND</button>
+                            <button type="submit" name="send" class="btn text-white custom-bg mt-3">ИЛГЭЭХ</button>
                     </form>
                 </div>
             </div>
@@ -102,10 +102,10 @@
 
             $res = insert($q,$values,'ssss');
             if($res==1){
-                alert('success','Mail sent!');
+                alert('success','Мессеж амжилттай илгээгдлээ!');
             }
             else{
-                alert('error','Server down! Try again later.');
+                alert('error','Сервер унасан байна! Дахин оролдоно уу.');
             }
         }
     ?>

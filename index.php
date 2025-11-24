@@ -54,19 +54,19 @@
     <div class="container availability-form">
         <div class="row">
             <div class="col-lg-12 bg-white shadow p-4 rounded">
-                <h5 class="mb-4">Check Booking Available</h5>
+                <h5 class="mb-4">Өрөө хайх</h5>
                 <form id="search_form">
                     <div class="row align-items-end">
                         <div class="col-lg-3 mb-3">
-                            <label class="form-label" style="font-weight: 500;">Check-in</label>
+                            <label class="form-label" style="font-weight: 500;">Ирэх огноо</label>
                             <input type="date" name="check_in" class="form-control shadow-none" required>
                         </div>
                         <div class="col-lg-3 mb-3">
-                            <label class="form-label" style="font-weight: 500;">Check-out</label>
+                            <label class="form-label" style="font-weight: 500;">Явах огноо</label>
                             <input type="date" name="check_out" class="form-control shadow-none" required>
                         </div>
                         <div class="col-lg-2 mb-3">
-                            <label class="form-label" style="font-weight: 500;">Adult</label>
+                            <label class="form-label" style="font-weight: 500;">Том хүн</label>
                             <select name="adults" class="form-select shadow-none">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -76,7 +76,7 @@
                             </select>
                         </div>
                         <div class="col-lg-2 mb-3">
-                            <label class="form-label" style="font-weight: 500;">Children</label>
+                            <label class="form-label" style="font-weight: 500;">Хүүхэд</label>
                             <select name="children" class="form-select shadow-none">
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -86,7 +86,7 @@
                             </select>
                         </div>
                         <div class="col-lg-2 mb-lg-3 mt-2">
-                            <button type="submit" class="btn text-white shadow-none custom-bg w-100">Search</button>
+                            <button type="submit" class="btn text-white shadow-none custom-bg w-100">Хайх</button>
                         </div>
                     </div>
                 </form>
@@ -103,7 +103,7 @@
 
     <!-- Our Rooms -->
 
-    <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR ROOMS</h2>
+    <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">МАНАЙ ӨРӨӨНҮҮД</h2>
 
     <div class="container" id="default_rooms">
         <div class="row">
@@ -153,26 +153,26 @@
                     <img src="$room_thumb" class="card-img-top">
                     <div class="card-body">
                         <h5>$room_data[name]</h5>
-                        <h6 class="mb-4">₮$room_data[price] per night</h6>
+                        <h6 class="mb-4">₮$room_data[price] / шөнө</h6>
                         <div class="features mb-4">
-                            <h6 class="mb-1">Features</h6>
+                            <h6 class="mb-1">Онцлог</h6>
                             $features_data
                         </div>
                         <div class="facilities mb-4">
-                            <h6 class="mb-1">Facilities</h6>
+                            <h6 class="mb-1">Үйлчилгээ</h6>
                             $facilities_data
                         </div>
                         <div class="guests mb-4">
-                            <h6 class="mb-1">Guests</h6>
+                            <h6 class="mb-1">Зочид</h6>
                             <span class="badge rounded-pill bg-light text-dark text-wrap">
-                            $room_data[adult] Adults
+                            $room_data[adult] Том хүн
                             </span>
                             <span class="badge rounded-pill bg-light text-dark text-wrap">
-                            $room_data[children] Children
+                            $room_data[children] Хүүхэд
                             </span>
                         </div>
                         <div class="rating mb-4">
-                            <h6 class="mb-1">Rating</h6>
+                            <h6 class="mb-1">Үнэлгээ</h6>
                             <span class="badge rounded-pill bg-light">    
                             <i class="bi bi-star-fill text-warning"></i>  
                             <i class="bi bi-star-fill text-warning"></i>
@@ -181,8 +181,8 @@
                             </span>
                         </div>
                         <div class="d-flex justify-content-evenly mb-2">
-                            <a href="#" onclick="bookRoom($room_data[id])" class="btn btn-sm text-white custom-bg shadow-none">Book Now</a>
-                            <a href="room_details.php?id=$room_data[id]" class="btn btn-sm  btn-outline-dark shadow-none">More details</a>
+                            <a href="#" onclick="bookRoom($room_data[id])" class="btn btn-sm text-white custom-bg shadow-none">Захиалах</a>
+                            <a href="room_details.php?id=$room_data[id]" class="btn btn-sm  btn-outline-dark shadow-none">Дэлгэрэнгүй</a>
                         </div>                      
                     </div>
                   </div>                 
@@ -192,7 +192,7 @@
             }
             ?>  
             <div class="col-lg-12 text-center mt-5">
-                <a href="rooms.php" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">More Rooms >>></a>
+                <a href="rooms.php" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Бүх өрөө үзэх >>></a>
 
             </div>
         </div>
@@ -200,7 +200,7 @@
 
     <!-- Our Facilities -->
 
-    <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR FACILITIES</h2>
+    <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">МАНАЙ ҮЙЛЧИЛГЭЭ</h2>
 
     <div class="container">
         <div class="row justify-content-evenly px-lg-0 px-md-0 px-5">
@@ -218,14 +218,14 @@
             }
             ?>
             <div class="col-lg-12 text-center mt-5">
-                <a href="facilities.php" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">More Facilities >>></a>
+                <a href="facilities.php" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Бүх үйлчилгээ үзэх >>></a>
             </div>
         </div>
     </div>
 
     <!-- Testimonials -->
 
-    <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">TESTIMONIALS</h2>
+    <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">ҮНЭЛГЭЭ СЭТГЭГДЭЛ</h2>
 
     <div class="container mt-5">
     <div class="swiper swiper-testimonial">
@@ -310,13 +310,13 @@
         <div class="swiper-pagination"></div>
     </div>
         <div class="col-lg-12 text-center mt-5">
-                <a href="about.php" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Know More >>></a>
+                <a href="about.php" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Дэлгэрэнгүй >>></a>
         </div>
     </div>
 
     <!-- Reach us -->
 
-    <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">REACH US</h2>
+    <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">ХОЛБОО БАРИХ</h2>
 
     <div class="container">
         <div class="row">
@@ -325,7 +325,7 @@
             </div>
             <div class="col-lg-4 col-md-4">
                 <div class="bg-white p-4 rounded mb-4">
-                    <h5>Call us</h5>
+                    <h5>Утас</h5>
                     <i class="bi bi-telephone-fill"></i>
                     <a href="tel:+<?php echo $contact_r['pn1'] ?>" class="d-inline-block mb-2 text-decoration-none text-dark">+<?php echo $contact_r['pn1'] ?>
                     </a>
@@ -342,7 +342,7 @@
                     ?>
                 </div>
                 <div class="bg-white p-4 rounded mb-4">
-                    <h5>Follow us</h5>
+                    <h5>Биднийг дагаарай</h5>
                     <?php
                         if($contact_r['tw']!=''){
                             echo<<<data
