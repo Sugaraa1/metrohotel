@@ -2,18 +2,20 @@
     <div class="row">
         <div class="col-lg-4 p-4">
             <h3 class="h-font fw-bold fs-3 mb-2">METRO HOTEL</h3>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id placeat, itaque aliquid voluptatem, alias assumenda enim at reiciendis odio, consequuntur sunt saepe fugit architecto beatae ab iusto. Obcaecati, cupiditate magnam!</p>
+            <p>Метро Зочид Буудал нь олон жилийн туршлагатай, мэргэжлийн багтай, зочдын сэтгэл ханамжийг эрхэмлэдэг буудал юм. Бид танд орчин үеийн тав тухтай өрөө, чанартай үйлчилгээ үзүүлж, таны амралтыг дурсамжтай болгохыг эрмэлздэг.</p>
         </div>
         <div class="col-lg-4 p-4">
-            <h5 class="mb-3">Links</h5>
-            <a href="index.php" class="d-inline-block mb-2 text-dark text-decoration-none">Home</a> <br>
-            <a href="rooms.php" class="d-inline-block mb-2 text-dark text-decoration-none">Rooms</a> <br>
-            <a href="facilities.php" class="d-inline-block mb-2 text-dark text-decoration-none">Facilities</a> <br>
-            <a href="contact.php" class="d-inline-block mb-2 text-dark text-decoration-none">Contact us</a> <br>
-            <a href="about.php" class="d-inline-block mb-2 text-dark text-decoration-none">About</a>
+            <h5 class="mb-3"><strong>Холбоосууд</strong></h5>
+            <a href="index.php" class="d-inline-block mb-2 text-dark text-decoration-none">Нүүр</a> <br>
+            <a href="rooms.php" class="d-inline-block mb-2 text-dark text-decoration-none">Өрөөнүүд</a> <br>
+            <a href="facilities.php" class="d-inline-block mb-2 text-dark text-decoration-none">Үйлчилгээ
+</a> <br>
+            <a href="contact.php" class="d-inline-block mb-2 text-dark text-decoration-none">Холбоо барих</a> <br>
+            <a href="about.php" class="d-inline-block mb-2 text-dark text-decoration-none">Бидний тухай
+</a>
         </div> 
         <div class="col-lg-4 p-4">
-            <h5 class="mb-3">Follow Us</h5>
+            <h5 class="mb-3"><strong>Биднийг дагаарай</strong></h5>
             <?php
                 if($contact_r['tw']!=''){
                     echo<<<data

@@ -174,21 +174,78 @@
 
                 
             <div>
-                <h5 class="mb-3">Review & Rating</h5>
-                <div>
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="images/features/user ext.png" width="30px">
-                        <h6 class="mb-0 ms-2">Random user 3</h6>
-                    </div>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti magnam facere ad ex maiores quibusdam id iste qui, sed quidem eveniet, ut cumque nemo! Animi reprehenderit incidunt sint reiciendis magnam?
-                    </p>
-                    <div class="rating">   
-                                <i class="bi bi-star-fill text-warning"></i>  
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                        </div>
+                <h5 class="mb-3">Үнэлгээ & Сэтгэгдэл</h5>
+                
+                <?php
+                    // Дундаж үнэлгээ тооцоолох
+                    $rating_q = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews 
+                                FROM `room_reviews` 
+                                WHERE `room_id` = ? AND `status` = 1";
+                    $rating_res = select($rating_q, [$room_data['id']], 'i');
+                    $rating_data = mysqli_fetch_assoc($rating_res);
+                    
+                    $avg_rating = round($rating_data['avg_rating'], 1);
+                    $total_reviews = $rating_data['total_reviews'];
+                    
+                    if($total_reviews > 0) {
+                        echo '<div class="mb-4 p-3 bg-light rounded">';
+                        echo '<div class="d-flex align-items-center">';
+                        echo '<h2 class="mb-0 me-3">' . $avg_rating . '</h2>';
+                        echo '<div>';
+                        
+                        // Одны үнэлгээ харуулах
+                        for($i = 1; $i <= 5; $i++) {
+                            if($i <= floor($avg_rating)) {
+                                echo '<i class="bi bi-star-fill text-warning"></i>';
+                            } else if($i - 0.5 <= $avg_rating) {
+                                echo '<i class="bi bi-star-half text-warning"></i>';
+                            } else {
+                                echo '<i class="bi bi-star text-warning"></i>';
+                            }
+                        }
+                        
+                        echo '<p class="mb-0 mt-1">' . $total_reviews . ' үнэлгээ</p>';
+                        echo '</div></div></div>';
+                    } else {
+                        echo '<p class="text-muted">Одоогоор үнэлгээ байхгүй байна.</p>';
+                    }
+                    
+                    // Бүх сэтгэгдлүүдийг харуулах
+                    $review_q = "SELECT r.*, u.name as user_name, u.profile 
+                                FROM `room_reviews` r
+                                INNER JOIN `user_cred` u ON r.user_id = u.id
+                                WHERE r.room_id = ? AND r.status = 1
+                                ORDER BY r.created_at DESC";
+                    $review_res = select($review_q, [$room_data['id']], 'i');
+                    
+                    if(mysqli_num_rows($review_res) > 0) {
+                        while($review = mysqli_fetch_assoc($review_res)) {
+                            $profile_pic = USERS_IMG_PATH . $review['profile'];
+                            $date = date('Y-m-d', strtotime($review['created_at']));
+                            
+                            echo '<div class="mb-4 pb-3 border-bottom">';
+                            echo '<div class="d-flex align-items-center mb-2">';
+                            echo '<img src="' . $profile_pic . '" width="40px" height="40px" class="rounded-circle me-2" style="object-fit: cover;">';
+                            echo '<div>';
+                            echo '<h6 class="mb-0">' . $review['user_name'] . '</h6>';
+                            echo '<small class="text-muted">' . $date . '</small>';
+                            echo '</div></div>';
+                            
+                            echo '<div class="mb-2">';
+                            for($i = 0; $i < $review['rating']; $i++) {
+                                echo '<i class="bi bi-star-fill text-warning"></i>';
+                            }
+                            for($i = $review['rating']; $i < 5; $i++) {
+                                echo '<i class="bi bi-star text-warning"></i>';
+                            }
+                            echo '</div>';
+                            
+                            echo '<p class="mb-0">' . $review['review'] . '</p>';
+                            echo '</div>';
+                        }
+                    }
+                ?>
+            </div>
                 </div>
             </div>
             </div>

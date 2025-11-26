@@ -59,6 +59,9 @@
                                 </div>   
                                 </div>                              
                             </div>
+                            <div class="col-lg-2 mb-lg-3 mt-2">
+                            <button type="submit" class="btn text-white shadow-none custom-bg w-100">Хайх</button>
+                        </div>
                         </div>
                     </div>
                 </nav>
@@ -111,6 +114,29 @@
                     $thumb_res = mysqli_fetch_assoc($thumb_q);
                     $room_thumb = ROOMS_IMG_PATH.$thumb_res['image'];
                 }
+                //get average rating
+                $rating_q = mysqli_query($con,"SELECT AVG(rating) as avg_rating, COUNT(*) as total 
+                    FROM `room_reviews` 
+                    WHERE `room_id`='$room_data[id]' AND `status`=1");
+                $rating_data = mysqli_fetch_assoc($rating_q);
+                $avg_rating = round($rating_data['avg_rating'], 1);
+                $total_reviews = $rating_data['total'];
+                
+                $rating_html = '';
+                if($total_reviews > 0) {
+                    for($i=1; $i<=5; $i++) {
+                        if($i <= floor($avg_rating)) {
+                            $rating_html .= '<i class="bi bi-star-fill text-warning"></i>';
+                        } else if($i - 0.5 <= $avg_rating) {
+                            $rating_html .= '<i class="bi bi-star-half text-warning"></i>';
+                        } else {
+                            $rating_html .= '<i class="bi bi-star text-warning"></i>';
+                        }
+                    }
+                    $rating_html .= " <small>($avg_rating / $total_reviews үнэлгээ)</small>";
+                } else {
+                    $rating_html = '<small class="text-muted">Үнэлгээ байхгүй</small>';
+                }
 
                 //print room card
                 echo <<<data
@@ -138,6 +164,10 @@
                             <span class="badge rounded-pill bg-light text-dark text-wrap">
                                 $room_data[children] Хүүхэд
                             </span>
+                        </div>
+                        <div class="rating mt-3">
+                            <h6 class="mb-1">Үнэлгээ</h6>
+                            $rating_html
                         </div>
                         </div>
                         <div class="col-md-2 mt-lg-0 mt-md-0 mt-4 text-center">

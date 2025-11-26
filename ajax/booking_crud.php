@@ -121,7 +121,8 @@ if(isset($_POST['get_bookings'])) {
     
     $user_id = $_SESSION['uId'];
     
-    $query = "SELECT b.*, r.name as room_name, r.price 
+    $query = "SELECT b.*, r.name as room_name, r.price,
+              (SELECT COUNT(*) FROM `room_reviews` WHERE `booking_id` = b.booking_id) as has_review
               FROM `bookings` b
               INNER JOIN `rooms` r ON b.room_id = r.id
               WHERE b.user_id = ?
@@ -163,6 +164,50 @@ if(isset($_POST['cancel_booking'])) {
     
     if($result) {
         echo json_encode(['status' => 'success', 'message' => 'Захиалга цуцлагдлаа!']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Алдаа гарлаа!']);
+    }
+    exit;
+}
+// Add review
+if(isset($_POST['add_review'])) {
+    if(!isset($_SESSION['login']) || $_SESSION['login'] != true) {
+        echo json_encode(['status' => 'error', 'message' => 'Unauthorized']);
+        exit;
+    }
+    
+    $data = filteration($_POST);
+    $booking_id = $data['booking_id'];
+    $room_id = $data['room_id'];
+    $user_id = $_SESSION['uId'];
+    $rating = $data['rating'];
+    $review = $data['review'];
+    
+    // Өөрийн booking эсэхийг шалгах
+    $check_query = "SELECT * FROM `bookings` WHERE `booking_id` = ? AND `user_id` = ? AND `booking_status` = 'confirmed'";
+    $check_result = select($check_query, [$booking_id, $user_id], 'ii');
+    
+    if(mysqli_num_rows($check_result) == 0) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid booking']);
+        exit;
+    }
+    
+    // Аль хэдийн үнэлгээ өгсөн эсэхийг шалгах
+    $review_check = select("SELECT * FROM `room_reviews` WHERE `booking_id` = ?", [$booking_id], 'i');
+    if(mysqli_num_rows($review_check) > 0) {
+        echo json_encode(['status' => 'error', 'message' => 'Та аль хэдийн үнэлгээ өгсөн байна!']);
+        exit;
+    }
+    
+    $query = "INSERT INTO `room_reviews`(`booking_id`, `room_id`, `user_id`, `rating`, `review`) 
+              VALUES (?, ?, ?, ?, ?)";
+    
+    $values = [$booking_id, $room_id, $user_id, $rating, $review];
+    
+    $result = insert($query, $values, 'iiiis');
+    
+    if($result) {
+        echo json_encode(['status' => 'success', 'message' => 'Үнэлгээ амжилттай илгээгдлээ!']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Алдаа гарлаа!']);
     }

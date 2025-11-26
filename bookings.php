@@ -30,6 +30,69 @@
 
     <?php require('inc/footer.php'); ?>
 
+    <!-- Review Modal -->
+    <div class="modal fade" id="reviewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalTitle">Үнэлгээ өгөх</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="review_form">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Үнэлгээ</label>
+                            <div class="rating-input">
+                                <input type="radio" name="rating" value="5" id="star5" required>
+                                <label for="star5"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" name="rating" value="4" id="star4">
+                                <label for="star4"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" name="rating" value="3" id="star3">
+                                <label for="star3"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" name="rating" value="2" id="star2">
+                                <label for="star2"><i class="bi bi-star-fill"></i></label>
+                                <input type="radio" name="rating" value="1" id="star1">
+                                <label for="star1"><i class="bi bi-star-fill"></i></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Таны сэтгэгдэл</label>
+                            <textarea name="review" class="form-control shadow-none" rows="4" required></textarea>
+                        </div>
+                        <input type="hidden" name="booking_id">
+                        <input type="hidden" name="room_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Болих</button>
+                        <button type="submit" class="btn btn-primary">Илгээх</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .rating-input {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        .rating-input input {
+            display: none;
+        }
+        .rating-input label {
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.2s;
+        }
+        .rating-input input:checked ~ label,
+        .rating-input label:hover,
+        .rating-input label:hover ~ label {
+            color: #ffc107;
+        }
+    </style>
+
     <script>
         function loadBookings() {
             let xhr = new XMLHttpRequest();
@@ -68,8 +131,17 @@
                             }
                             
                             let cancelBtn = '';
+                            let reviewBtn = '';
+                            
                             if(booking.booking_status != 'cancelled') {
                                 cancelBtn = `<button class="btn btn-sm btn-danger" onclick="cancelBooking(${booking.booking_id})">Цуцлах</button>`;
+                            }
+                            
+                            // Захиалга confirmed байх үед сэтгэгдэл үлдээх товч харуулах
+                            if(booking.booking_status == 'confirmed' && booking.has_review == 0) {
+                                reviewBtn = `<button class="btn btn-sm btn-primary mt-2" onclick="openReviewModal(${booking.booking_id}, ${booking.room_id}, '${booking.room_name}')">Үнэлгээ өгөх</button>`;
+                            } else if(booking.has_review == 1) {
+                                reviewBtn = `<span class="badge bg-success mt-2">Үнэлгээ өгсөн</span>`;
                             }
                             
                             html += `
@@ -93,6 +165,7 @@
                                                         ${paymentBadge}
                                                     </div>
                                                     ${cancelBtn}
+                                                    ${reviewBtn}
                                                 </div>
                                             </div>
                                         </div>
@@ -136,6 +209,45 @@
         window.onload = function() {
             loadBookings();
         }
+
+        function openReviewModal(booking_id, room_id, room_name) {
+            document.getElementById('reviewModalTitle').innerText = 'Үнэлгээ өгөх - ' + room_name;
+            document.getElementById('review_form').elements['booking_id'].value = booking_id;
+            document.getElementById('review_form').elements['room_id'].value = room_id;
+            
+            let reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
+            reviewModal.show();
+        }
+
+        // Review form submit
+        let review_form = document.getElementById('review_form');
+        review_form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let formData = new FormData(this);
+            formData.append('add_review', '');
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/booking_crud.php", true);
+
+            xhr.onload = function() {
+                let response = JSON.parse(this.responseText);
+                
+                if(response.status == 'success') {
+                    alert('success', response.message);
+                    
+                    let modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
+                    modal.hide();
+                    
+                    review_form.reset();
+                    loadBookings();
+                } else {
+                    alert('error', response.message);
+                }
+            }
+
+            xhr.send(formData);
+        });
     </script>
 </body>
 </html>

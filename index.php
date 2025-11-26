@@ -147,6 +147,30 @@
                     $room_thumb = ROOMS_IMG_PATH.$thumb_res['image'];
                 }
 
+                //get average rating
+                $rating_q = mysqli_query($con,"SELECT AVG(rating) as avg_rating, COUNT(*) as total 
+                    FROM `room_reviews` 
+                    WHERE `room_id`='$room_data[id]' AND `status`=1");
+                $rating_data = mysqli_fetch_assoc($rating_q);
+                $avg_rating = round($rating_data['avg_rating'], 1);
+                $total_reviews = $rating_data['total'];
+                
+                $rating_html = '';
+                if($total_reviews > 0) {
+                    for($i=1; $i<=5; $i++) {
+                        if($i <= floor($avg_rating)) {
+                            $rating_html .= '<i class="bi bi-star-fill text-warning"></i>';
+                        } else if($i - 0.5 <= $avg_rating) {
+                            $rating_html .= '<i class="bi bi-star-half text-warning"></i>';
+                        } else {
+                            $rating_html .= '<i class="bi bi-star text-warning"></i>';
+                        }
+                    }
+                    $rating_html = "<span class='badge rounded-pill bg-light'>$rating_html <small>($avg_rating)</small></span>";
+                } else {
+                    $rating_html = '<span class="badge rounded-pill bg-light text-muted">Үнэлгээ байхгүй</span>';
+                }
+
                 echo <<<data
                 <div class="col-lg-4 col-md-6 my-3">
                 <div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
@@ -173,12 +197,7 @@
                         </div>
                         <div class="rating mb-4">
                             <h6 class="mb-1">Үнэлгээ</h6>
-                            <span class="badge rounded-pill bg-light">    
-                            <i class="bi bi-star-fill text-warning"></i>  
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            <i class="bi bi-star-fill text-warning"></i>
-                            </span>
+                            $rating_html
                         </div>
                         <div class="d-flex justify-content-evenly mb-2">
                             <a href="#" onclick="bookRoom($room_data[id])" class="btn btn-sm text-white custom-bg shadow-none">Захиалах</a>
