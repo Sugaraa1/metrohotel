@@ -252,10 +252,10 @@
         <div class="swiper-slide bg-white p-4">
             <div class="profile d-flex align-items-center mb-3">
                 <img src="images/features/user ext.png" width="30px">
-                <h6 class="mb-0 ms-2">Random user 1</h6>
+                <h6 class="mb-0 ms-2">АЙ</h6>
             </div>
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti magnam facere ad ex maiores quibusdam id iste qui, sed quidem eveniet, ut cumque nemo! Animi reprehenderit incidunt sint reiciendis magnam?
+                Дахин ирэхэд бэлэн байна. Үйлчилгээ маш сайн, ажилтнууд эелдэг найрсаг.
             </p>
             <div class="rating">   
                         <i class="bi bi-star-fill text-warning"></i>  
@@ -267,10 +267,10 @@
             <div class="swiper-slide bg-white p-4">
             <div class="profile d-flex align-items-center mb-3">
                 <img src="images/features/user ext.png" width="30px">
-                <h6 class="mb-0 ms-2">Random user 2</h6>
+                <h6 class="mb-0 ms-2">Эжаму</h6>
             </div>
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti magnam facere ad ex maiores quibusdam id iste qui, sed quidem eveniet, ut cumque nemo! Animi reprehenderit incidunt sint reiciendis magnam?
+                Байршил сайтай, өрөө цэвэрхэн, тав тухтай. Хотын төвд амрахад тохиромжтой газар.
             </p>
             <div class="rating">   
                         <i class="bi bi-star-fill text-warning"></i>  
@@ -282,10 +282,10 @@
             <div class="swiper-slide bg-white p-4">
             <div class="profile d-flex align-items-center mb-3">
                 <img src="images/features/user ext.png" width="30px">
-                <h6 class="mb-0 ms-2">Random user 3</h6>
+                <h6 class="mb-0 ms-2">Хаөми</h6>
             </div>
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti magnam facere ad ex maiores quibusdam id iste qui, sed quidem eveniet, ut cumque nemo! Animi reprehenderit incidunt sint reiciendis magnam?
+                Арай үнэтэй санагдсан ч үйлчилгээ, орчин нь үнэхээр сайн байсан.
             </p>
             <div class="rating">   
                         <i class="bi bi-star-fill text-warning"></i>  
@@ -297,10 +297,10 @@
             <div class="swiper-slide bg-white p-4">
             <div class="profile d-flex align-items-center mb-3">
                 <img src="images/features/user ext.png" width="30px">
-                <h6 class="mb-0 ms-2">Random user 4</h6>
+                <h6 class="mb-0 ms-2">Уугуул</h6>
             </div>
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti magnam facere ad ex maiores quibusdam id iste qui, sed quidem eveniet, ut cumque nemo! Animi reprehenderit incidunt sint reiciendis magnam?
+                Эрүүл ахуй, үйлчилгээ маш сайн. Дахин ирэхэд бэлэн байна.
             </p>
             <div class="rating">   
                         <i class="bi bi-star-fill text-warning"></i>  
@@ -312,10 +312,10 @@
             <div class="swiper-slide bg-white p-4">
             <div class="profile d-flex align-items-center mb-3">
                 <img src="images/features/user ext.png" width="30px">
-                <h6 class="mb-0 ms-2">Random user 5</h6>
+                <h6 class="mb-0 ms-2">Уугуул</h6>
             </div>
             <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti magnam facere ad ex maiores quibusdam id iste qui, sed quidem eveniet, ut cumque nemo! Animi reprehenderit incidunt sint reiciendis magnam?
+                Ужэ бячсан лоорем ипсум долор сит амет цонсецтетур адиписицинг елит. Делленити магнам фасере ад ек маиорес кюбусдам ид исте кви, сед куидем евениет, ут цумкуе немо! Аними репрехендерит инцидунт синт реициendis магнам?
             </p>
             <div class="rating">   
                         <i class="bi bi-star-fill text-warning"></i>  

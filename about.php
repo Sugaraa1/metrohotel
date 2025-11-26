@@ -31,7 +31,7 @@
                 </p>
             </div>
             <div class="col-lg-5 col-md-5 mb-4 order-lg-2 order-md-2 order-1">
-                <img src="images/carousel/ceo.webp" class="w-100">
+                <img src="images/about/ceosad.jfif" class="w-100">
             </div>
         </div>
     </div>
@@ -40,25 +40,25 @@
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-4 px-4">
                 <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
-                    <img src="images/carousel/yhdfghf.jpg" width="70px">
+                    <img src="images/rooms/IMG_14606.jpg" width="70px">
                     <h4 class="mt-3">100+ Өрөө</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 px-4">
                 <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
-                    <img src="images/carousel/yhdfghf.jpg" width="70px">
+                    <img src="images/users/IMG_50300.jpeg" width="70px">
                     <h4 class="mt-3">200+ ЗОЧИН</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 px-4">
                 <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
-                    <img src="images/carousel/yhdfghf.jpg" width="70px">
+                    <img src="images/facilities/IMG_23614.svg" width="70px">
                     <h4 class="mt-3">150+ ҮНЭЛГЭЭ</h4>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 px-4">
                 <div class="bg-white rounded shadow p-4 border-top border-4 text-center box">
-                    <img src="images/carousel/yhdfghf.jpg" width="70px">
+                    <img src="images/about/IMG_29712.jfif" width="70px">
                     <h4 class="mt-3">100+ АЖИЛТАН</h4>
                 </div>
             </div>

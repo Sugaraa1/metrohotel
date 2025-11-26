@@ -14,8 +14,10 @@
         <h2 class="fw-bold h-font text-center">МАНАЙ ӨРӨӨНҮҮД</h2>
         <div class="h-line bg-dark"></div>
     </div>
+    
     <div class="container-fluid">
         <div class="row">
+            <!-- ШҮҮЛТҮҮР -->
             <div class="col-lg-3 col-md-12 mb-lg-0 mb-4 ps-4">
                 <nav class="navbar navbar-expand-lg navbar-light bg-white rounded shadow">
                     <div class="container-fluid flex-lg-column align-items-stretch">
@@ -24,163 +26,67 @@
                         <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse flex-column align-items-stretch mt-2" id="filterDropdown">
+                            
+                            <!-- СУЛ ӨРӨӨ ШАЛГАХ -->
                             <div class="border bg-light p-3 rounded mb-3">
                                 <h5 class="mb-3" style="font-size: 18px;">СУЛ ӨРӨӨ ШАЛГАХ</h5>
                                 <label class="form-label">Ирэх огноо</label>
-                            <input type="date" class="form-control shadow-none mb-3"> 
-                             <label class="form-label">Явах огноо</label>
-                            <input type="date" class="form-control shadow-none">
+                                <input type="date" id="check_in_filter" class="form-control shadow-none mb-3"> 
+                                <label class="form-label">Явах огноо</label>
+                                <input type="date" id="check_out_filter" class="form-control shadow-none">
                             </div>
-                            <div class="border bg-light p-3 rounded mb-3">
-                                <h5 class="mb-3" style="font-size: 18px;">ҮЙЛЧИЛГЭЭ</h5>
-                                <div class="mb-2">
-                                <input type="checkbox" id="f1"class="form-check-input  shadow-none me-1">  
-                                <label class="form-check-label" for="f1">Үйлчилгээ 1</label>                            
-                                </div>
-                                 <div class="mb-2">
-                                <input type="checkbox" id="f2"class="form-check-input  shadow-none me-1">  
-                                <label class="form-check-label" for="f2">Үйлчилгээ 2</label>                          
-                                </div>
-                                 <div class="mb-2">
-                                <input type="checkbox" id="f3"class="form-check-input  shadow-none me-1">  
-                                <label class="form-check-label" for="f3">Үйлчилгээ 3</label>                              
-                                </div>
-                            </div>
+
+                            <!-- ЗОЧИД -->
                             <div class="border bg-light p-3 rounded mb-3">
                                 <h5 class="mb-3" style="font-size: 18px;">ЗОЧИД</h5>
                                 <div class="d-flex">
-                                 <div class="me-3">
-                                    <label class="form-label">Том хүн</label>
-                                    <input type="number" class="form-control shadow-none"> 
-                                </div>
-                                <div>
-                                    <label class="form-label">Хүүхэд</label>
-                                    <input type="number" class="form-control shadow-none"> 
-                                </div>   
+                                    <div class="me-3">
+                                        <label class="form-label">Том хүн</label>
+                                        <input type="number" id="adults_filter" min="1" value="1" class="form-control shadow-none"> 
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Хүүхэд</label>
+                                        <input type="number" id="children_filter" min="0" value="0" class="form-control shadow-none"> 
+                                    </div>   
                                 </div>                              
                             </div>
-                            <div class="col-lg-2 mb-lg-3 mt-2">
-                            <button type="submit" class="btn text-white shadow-none custom-bg w-100">Хайх</button>
-                        </div>
+
+                            <!-- ҮНЭ -->
+                            <div class="border bg-light p-3 rounded mb-3">
+                                <h5 class="mb-3" style="font-size: 18px;">ҮНЭ /шөнө/</h5>
+                                <div class="mb-2">
+                                    <label class="form-label">Доод</label>
+                                    <input type="number" id="min_price" min="0" value="0" class="form-control shadow-none">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label">Дээд</label>
+                                    <input type="number" id="max_price" min="0" value="1000000" class="form-control shadow-none">
+                                </div>
+                            </div>
+
+                            <!-- ТОВЧУУД -->
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-primary shadow-none" onclick="applyFilters()">
+                                    <i class="bi bi-funnel"></i> Хайх
+                                </button>
+                                <button class="btn btn-sm btn-secondary shadow-none" onclick="clearFilters()">
+                                    <i class="bi bi-x-circle"></i> Цэвэрлэх
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </nav>
             </div>
 
+            <!-- ӨРӨӨНИЙ ЖАГСААЛТ -->
             <div class="col-lg-9 col-md-12 px-4">
-
-            <?php 
-                $room_res = select("SELECT * FROM `rooms` WHERE `status`=? AND `removed`=?",[1,0],'ii');
-
-                while($room_data = mysqli_fetch_assoc($room_res))
-                {
-                    //get features of room
-
-                    $fea_q = mysqli_query($con,"SELECT f.name FROM `features` f 
-                        INNER JOIN `room_features` rfea 
-                        ON f.id = rfea.features_id 
-                        WHERE rfea.room_id = '$room_data[id]'");
-
-                    $features_data = "";
-                    while($fea_row = mysqli_fetch_assoc($fea_q)){
-                        $features_data .="<span class='badge rounded-pill bg-light text-dark text-wrap me-1 mb-1'>
-                                $fea_row[name]
-                            </span>";
-                    }
-
-                    //get facilities of room
-
-                    $fac_q = mysqli_query($con,"SELECT f.name FROM `facilities` f 
-                        INNER JOIN `room_facilities` rfac ON f.id = rfac.facilities_id 
-                        WHERE rfac.room_id = '$room_data[id]'");
-
-                    $facilities_data = "";
-                    while($fac_row = mysqli_fetch_assoc($fac_q)){
-                        $facilities_data .="<span class='badge rounded-pill bg-light text-dark text-wrap me-1 mb-1'>
-                                $fac_row[name]
-                            </span>";
-
-                    }
-
-                    //get thumbnail of image
-
-                    $room_thumb = ROOMS_IMG_PATH."thumbnail.jpg";
-                    $thumb_q = mysqli_query($con,"SELECT * FROM `room_image` 
-                    WHERE `room_id`='$room_data[id]' 
-                    AND `thumb`='1'");
-
-                if(mysqli_num_rows($thumb_q)>0)
-                {
-                    $thumb_res = mysqli_fetch_assoc($thumb_q);
-                    $room_thumb = ROOMS_IMG_PATH.$thumb_res['image'];
-                }
-                //get average rating
-                $rating_q = mysqli_query($con,"SELECT AVG(rating) as avg_rating, COUNT(*) as total 
-                    FROM `room_reviews` 
-                    WHERE `room_id`='$room_data[id]' AND `status`=1");
-                $rating_data = mysqli_fetch_assoc($rating_q);
-                $avg_rating = round($rating_data['avg_rating'], 1);
-                $total_reviews = $rating_data['total'];
-                
-                $rating_html = '';
-                if($total_reviews > 0) {
-                    for($i=1; $i<=5; $i++) {
-                        if($i <= floor($avg_rating)) {
-                            $rating_html .= '<i class="bi bi-star-fill text-warning"></i>';
-                        } else if($i - 0.5 <= $avg_rating) {
-                            $rating_html .= '<i class="bi bi-star-half text-warning"></i>';
-                        } else {
-                            $rating_html .= '<i class="bi bi-star text-warning"></i>';
-                        }
-                    }
-                    $rating_html .= " <small>($avg_rating / $total_reviews үнэлгээ)</small>";
-                } else {
-                    $rating_html = '<small class="text-muted">Үнэлгээ байхгүй</small>';
-                }
-
-                //print room card
-                echo <<<data
-
-                <div class="card mb-4 border-0 shadow">
-                    <div class="row g-0 p-3 align-items-center">
-                        <div class="col-md-5 mb-lg-0 mb-md-0 mb-3">
-                        <img src="$room_thumb" class="img-fluid rounded">
-                        </div>
-                        <div class="col-md-5 px-lg-3 px-md-3 px-0">
-                        <h5 class="mb-3">$room_data[name]</h5>
-                        <div class="features mb-3">
-                            <h6 class="mb-1">Онцлог</h6>
-                            $features_data
-                        </div>
-                        <div class="facilities mb-3">
-                            <h6 class="mb-1">Үйлчилгээ</h6>
-                            $facilities_data
-                        </div>
-                        <div class="guests">
-                            <h6 class="mb-1">Зочид</h6>
-                            <span class="badge rounded-pill bg-light text-dark text-wrap">
-                                $room_data[adult] Том хүн
-                            </span>
-                            <span class="badge rounded-pill bg-light text-dark text-wrap">
-                                $room_data[children] Хүүхэд
-                            </span>
-                        </div>
-                        <div class="rating mt-3">
-                            <h6 class="mb-1">Үнэлгээ</h6>
-                            $rating_html
-                        </div>
-                        </div>
-                        <div class="col-md-2 mt-lg-0 mt-md-0 mt-4 text-center">
-                            <h6 class="mb-4">₮$room_data[price] / шөнө</h6>
-                            <a href="#" onclick="bookRoom($room_data[id])" class="btn btn-sm w-100 text-white custom-bg shadow-none mb-2">Захиалах</a>
-                            <a href="room_details.php?id=$room_data[id]" class="btn btn-sm w-100 btn-outline-dark shadow-none">Дэлгэрэнгүй</a>
+                <div id="rooms_data">
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Ачааллаж байна...</span>
                         </div>
                     </div>
                 </div>
-
-                data;
-            }
-            ?>
             </div>
         </div>
     </div>
@@ -188,6 +94,68 @@
     <?php require('inc/footer.php'); ?>
 
     <script>
+        // Set min date to today
+        let today = new Date().toISOString().split('T')[0];
+        document.getElementById('check_in_filter').setAttribute('min', today);
+        document.getElementById('check_out_filter').setAttribute('min', today);
+
+        // Update check-out min date when check-in changes
+        document.getElementById('check_in_filter').addEventListener('change', function() {
+            let checkIn = new Date(this.value);
+            checkIn.setDate(checkIn.getDate() + 1);
+            let minCheckOut = checkIn.toISOString().split('T')[0];
+            document.getElementById('check_out_filter').setAttribute('min', minCheckOut);
+        });
+
+        // Load all rooms on page load
+        window.onload = function() {
+            loadRooms();
+        }
+
+        function loadRooms(filters = {}) {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "ajax/rooms_filter.php", true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            xhr.onload = function() {
+                document.getElementById('rooms_data').innerHTML = this.responseText;
+            }
+
+            let params = 'get_rooms=1';
+            for (let key in filters) {
+                params += '&' + key + '=' + encodeURIComponent(filters[key]);
+            }
+
+            xhr.send(params);
+        }
+
+        function applyFilters() {
+            let filters = {
+                check_in: document.getElementById('check_in_filter').value,
+                check_out: document.getElementById('check_out_filter').value,
+                adults: document.getElementById('adults_filter').value,
+                children: document.getElementById('children_filter').value,
+                min_price: document.getElementById('min_price').value,
+                max_price: document.getElementById('max_price').value
+            };
+
+        }
+
+        function clearFilters() {
+            document.getElementById('check_in_filter').value = '';
+            document.getElementById('check_out_filter').value = '';
+            document.getElementById('adults_filter').value = '1';
+            document.getElementById('children_filter').value = '0';
+            document.getElementById('min_price').value = '0';
+            document.getElementById('max_price').value = '1000000';
+            
+            document.querySelectorAll('.facility-filter').forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+
+            loadRooms();
+        }
+
         function bookRoom(room_id) {
             <?php 
             if(isset($_SESSION['login']) && $_SESSION['login'] == true) {
